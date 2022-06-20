@@ -72,7 +72,7 @@ def add_new_card(card):
     Since a new card is assumed to be unlearned, it is by default
     added to the "least success" box.
     '''
-    boxes['low'].append(card)
+    boxes['low'].insert(0, card)
 
 def test():
     pass
