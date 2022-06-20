@@ -9,9 +9,7 @@ from flask import Flask
 # ('2+2 = ___', '4'),
 # ('What is "m" in "y = mx + b"?', 'slope')
 
-boxes = dict.fromkeys(['high', 'mid', 'low'], [])
-
-def spaced_rep_choice(cum_weights=(1,3,8)):
+def spaced_rep_choice(boxes, cum_weights=(8,3,1)):
     '''
     Returns one of els using weighted sampling. Weights give preference
     to boxes in inverse proportion to learner success (i.e., low
@@ -19,60 +17,65 @@ def spaced_rep_choice(cum_weights=(1,3,8)):
     
     els is assumed to be the keys of boxes.
     '''
-    return random.choices(boxes.keys(), cum_weights=cum_weights, k=1)
+    return random.choices(range(len(boxes)), cum_weights=cum_weights, k=1)
 
-def select_card():
-    '''
-    Choose a (weighted) random box and select the last card.
+class Cardset:
+    def __init__(self):
+        self.boxes = [[], [], []] # Low, mid, high
 
-    Return dict with keys "from box" and "card": name (string) of
-    box from which the card was selected and card (prompt-answer tuple),
-    respectively.
+    def select_card(self):
+        '''
+        Choose a (weighted) random box and select the last card.
 
-    Note: Another method would be to select a random card, but, since
-    cards are (currently) insert at the front of a box after a trial,
-    this method guarantees that a card won't be selected twice in a row.
-    '''
-    box_key = spaced_rep_choice(boxes)
-    return {"from box": box_key, "card": boxes[box_key].pop()}
+        Return dict with keys "from box" and "card": index of box from which the
+        card was selected and card (prompt-answer tuple), respectively.
 
-def get_card_prompt(card):
-    return card[0]
+        Note: Another method would be to select a random card, but, since
+        cards are (currently) insert at the front of a box after a trial,
+        this method guarantees that a card won't be selected twice in a row.
+        '''
+        box_key = spaced_rep_choice(self.boxes)
+        return {"from box": box_key, "card": self.boxes[box_key].pop()}
 
-def get_card_answer(card):
-    return card[1]
+    def get_card_prompt(self, card):
+        "Card is tuple of prompt, answer"
+        return card[0]
 
-def promote_card(card, from_box):
-    if from_box == 'low':
-        boxes['mid'].insert(0, card)
-    elif from_box == 'mid':
-        boxes['high'].insert(0, card)
+    def get_card_answer(self, card):
+        "Card is tuple of prompt, answer"
+        return card[1]
 
-def demote_card(card, from_box):
-    if from_box == 'high':
-        boxes['mid'].insert(0, card)
-    elif from_box == 'mid':
-        boxes['low'].insert(0, card)
+    def promote_card(self, card, from_box):
+        if from_box < 2:
+            self.boxes[from_box+1].insert(0, card) # Move up a box
+        else:
+            self.boxes[from_box].insert(0, card) # Move to front of same box
 
-def handle_trial_result(card_info, success):
-    '''
-    Takes parameters card_info (as would be provided by `select_card`)
-    & result (bool indicating success/failure) and updates box for card
-    based on result.
-    '''
-    if success:
-        promote_card(card_info['card'], card_info['from box'])
-    else:
-        demote_card(card_info['card'], card_info['from box'])
+    def demote_card(self, card, from_box):
+        if from_box > 0:
+            self.boxes[from_box-1].insert(0, card) # Move down a box
+        else:
+            self.boxes[from_box].insert(0, card) # Move to front of same box
 
-def add_new_card(card):
-    '''
-    Card is a tuple of 'prompt' and 'answer'.
+    def handle_trial_result(self, card_info, success):
+        '''
+        Takes parameters card_info (as would be provided by `select_card`)
+        & result (bool indicating success/failure) and updates box for card
+        based on result.
+        '''
+        if success:
+            self.promote_card(card_info['card'], card_info['from box'])
+        else:
+            self.demote_card(card_info['card'], card_info['from box'])
 
-    Since a new card is assumed to be unlearned, it is by default
-    added to the "least success" box.
-    '''
-    boxes['low'].insert(0, card)
+    def add_new_card(self, card):
+        '''
+        Card is a tuple of 'prompt' and 'answer'.
+
+        Since a new card is assumed to be unlearned, it is by default
+        added to the "least success" box.
+        '''
+        self.boxes[0].insert(0, card)
 
 def test():
     pass
