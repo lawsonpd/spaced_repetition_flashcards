@@ -12,6 +12,6 @@ def add_card():
     pass
 
 @app.route('/delete-card/<int:card_id>')
-def add_card():
+def delete_card():
     pass
 
