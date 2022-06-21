@@ -1,7 +1,5 @@
 # Flash cards with space repetition
 import random
-from flask import Flask
-
 
 # Cards are represented as tuples: (prompt, answer).
 # All elements are assumed to be strings.
