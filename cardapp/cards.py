@@ -4,24 +4,20 @@ from flask import (
 )
 from cardapp.db import get_db
 
-bp = Blueprint('cards', __name__)
+bp = Blueprint('cards', __name__, url_prefix='/cards')
 
 @bp.route('')
 def index():
-    pass
+    return "Not sure what goes here"
 
-@bp.route('/cardsets')
-def cardsets():
-    pass
-
-@bp.route('/learn/<int:cardset_id>')
-def learn_cardset(cardset_id):
-    pass
-
-@bp.route('/add-card', methods=('GET', 'POST'))
+@bp.route('/new', methods=('GET', 'POST'))
 def add_card():
-    pass
+    return "Add new card"
 
-@bp.route('/delete-card/<int:card_id>', methods=('GET', 'POST'))
+@bp.route('/delete/<int:card_id>', methods=('GET', 'POST'))
 def delete_card(card_id):
-    pass
+    return "Delete a card"
+
+@bp.route('/edit/<int:card_id>', methods=('GET', 'POST'))
+def edit_card(card_id):
+    return "Edit a card"

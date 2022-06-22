@@ -4,4 +4,13 @@ from flask import (
 )
 from cardapp.db import get_db
 
-bp = Blueprint('cardsets', __name__)
+bp = Blueprint('cardsets', __name__, url_prefix='/cardsets')
+
+@bp.route('')
+def index():
+    return "Main page"
+
+@bp.route('/new', methods=('GET', 'POST'))
+def add_cardset():
+    return "Add new cardset"
+
