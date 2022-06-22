@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 
 
 def create_app(test_config=None):
@@ -24,17 +24,17 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    # a simple home page placeholder
+    @app.route('/')
+    def main():
+        return render_template('main.html')
 
     from . import db
     db.init_app(app)
 
     from . import cardsets
     app.register_blueprint(cardsets.bp)
-    app.add_url_rule('/', endpoint='index')
+    # app.add_url_rule('/', endpoint='cardsets.index')
 
     from . import cards
     app.register_blueprint(cards.bp)
