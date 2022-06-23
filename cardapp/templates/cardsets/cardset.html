@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ cardset['name'] }} cardset{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% if cards %}
+        <ul>
+        {% for card in cards %}
+            <li>{{ card['prompt'] }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No cards in this set yet.</p>
+        <p><a href="">Add</a> some to start learning.</p>
+    {% endif%}
+{% endblock %}

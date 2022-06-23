@@ -27,8 +27,9 @@ def add_cardset():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO cardset VALUES (?)',
-                (cardsetname,)
+                'INSERT INTO cardset'
+                ' VALUES (?, ?)',
+                (None, cardsetname)
             )
             db.commit()
             return redirect(url_for('cardsets.index'))
@@ -36,7 +37,19 @@ def add_cardset():
 
 @bp.route('/<int:cardset_id>')
 def view_cardset(cardset_id):
-    pass
+    db = get_db()
+    cardset = db.execute(
+        'SELECT name FROM cardset'
+        ' WHERE id = ?',
+        (cardset_id,)
+    ).fetchone()
+
+    cards = db.execute(
+        'SELECT prompt, answer FROM card'
+        ' WHERE card.cardset_id = ?',
+        (cardset_id,)
+    ).fetchall()
+    return render_template('cardsets/cardset.html', cardset=cardset, cards=cards)
 
 @bp.route('/<int:cardset_id>/learn')
 def learn_cardset(cardset_id):

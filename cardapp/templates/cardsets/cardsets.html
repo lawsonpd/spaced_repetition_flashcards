@@ -8,7 +8,7 @@
     {% if cardsets %}
         {% for cardset in cardsets %}
             <div>
-                <h3><a href=" {{ url_for('cardsets.view_cardset', id=cardset['cardsetid']) }}">{{ cardset['cardsetname'] }}</a></h3>
+                <h3><a href=" {{ url_for('cardsets.view_cardset', cardset_id=cardset['id']) }}">{{ cardset['name'] }}</a></h3>
             </div>
         {% endfor %}
     {% else %}
