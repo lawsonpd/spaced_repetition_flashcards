@@ -15,6 +15,23 @@ def index():
 
 @bp.route('/new', methods=('GET', 'POST'))
 def add_cardset():
+    if request.method == 'POST':
+        cardsetname = request.form['cardset-name']
+        error = None
+
+        if not cardsetname:
+            error = 'Cardset name is required'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'INSERT INTO cardset VALUES (?)',
+                (cardsetname,)
+            )
+            db.commit()
+            return redirect(url_for('cardsets.index'))
     return render_template('cardsets/add_cardset.html')
 
 @bp.route('/<int:cardset_id>')
