@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}Cardsets{% endblock %}</h1>
+    <h1>{% block title %}Your cardsets{% endblock %}</h1>
 {% endblock %}
 
-{% block content %}Content...{% endblock %}
+{% block content %}
+    {% if cardsets %}
+        {% for cardset in cardsets %}
+            <div>
+                <h3><a href=" {{ url_for('cardsets.view_cardset', id=cardset['cardsetid']) }}">{{ cardset['cardsetname'] }}</a></h3>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>You don't have any cardsets yet. Why not <a href="{{ url_for('cardsets.add_cardset') }}">add one</a>!</div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{% block title %}Add cardset{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    <p>The name of the cardset should be a brief description of the content
+        of those cards. For example, "US History" or "Geometry".
+    </p>
+    <p>You'll add cards to this set in the next step.</p>
+    <form method="post">
+        <label for="cardset-name">Cardset name</label>
+        <input name="cardset-name" id="cardset-name" required>
+        <input type="submit" value="Add cardset">
+    </form>
+{% endblock %}
