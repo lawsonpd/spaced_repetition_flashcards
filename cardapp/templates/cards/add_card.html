@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h2>{% block title %}Add a card to <em>{{ cardset['name'] }}</em> cardset{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    {# This content could probably be put in a modal that can be dismissed by the user #}
+    <p>
+        The <strong>prompt</strong> is what will be shown first when you're learning a card. On a
+        physical flashcard this is what's on the front of the card.
+        It might be a question, but it doesn't have to be.
+    </p>
+    <p>
+        The <strong>answer</strong> is what you're trying to memorize or learn. This is what's on the
+        back side of a physical flashcard.
+    </p>
+    <p>
+        You'll want to format prompts in a way that will make sense when you're learning
+        the cards. Here are a few examples with alternative ways of phrasing prompts & answers:
+        <ul>
+            <li><em>Prompt:</em> What does 'm' represent in 'y = mx + b'?
+            <li><em>Answer:</em> slope
+        </ul>
+        <ul>
+            <li><em>Prompt:</em> In 'y = mx + b', 'b' represents ____
+            <li><em>Answer:</em> y-intercept
+        </ul>
+        <ul>
+            <li><em>Prompt:</em> The capitol of Tennessee
+            <li><em>Answer:</em> Nashville
+        </ul>
+        <ul>
+            <li><em>Prmopt:</em> The capitol of Tennessee is ____
+            <li><em>Answer:</em> Nashville
+        </ul>
+    </p>
+    <p>
+        It's totally up to you how to write prompts & answers! If it helps, just think of
+        the "prompt" as the front of the card and the "answer" as the back.
+    </p>
+    <p>
+        The key objective is to make sure that each <strong>prompt</strong> has a 
+        clear and distinct corresponding <strong>answer</strong>.
+    </p>
+    <form method="post">
+        <label for="prompt">Prompt</label>
+        <input name="prompt" id="prompt" required>
+        <label for="answer">Answer</label>
+        <input name="answer" id="answer" required>
+        <input type="submit" value="Add card">
+    </form>
+{% endblock %}

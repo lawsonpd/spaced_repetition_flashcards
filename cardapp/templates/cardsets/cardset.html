@@ -11,8 +11,9 @@
             <li>{{ card['prompt'] }}</li>
         {% endfor %}
         </ul>
+        <a href="{{ url_for('cardsets.add_card', cardset_id=cardset['id']) }}">Add card</a>
     {% else %}
         <p>No cards in this set yet.</p>
-        <p><a href="">Add</a> some to start learning.</p>
+        <p><a href="{{ url_for('cardsets.add_card', cardset_id=cardset['id']) }}">Add</a> some to start learning.</p>
     {% endif%}
 {% endblock %}
